@@ -1,4 +1,4 @@
-# Mohist Made in China
+# OrePowered Made in China
 
 Since CraftBukkit has modified a lot of underlying layers, some of the core mods are not available, we are working hard to improve.
 ## OrePowered-1.12.2 will continue to be maintained..
