@@ -32,7 +32,7 @@ shadowJar {
     classifier = null
     relocate 'jline', 'shadow.junit'
     relocate 'org.bukkit.craftbukkit', 'org.bukkit.craftbukkit.1_12_R2'
-    minimize {
+    dependencies {
         exclude(dependency('junit:.*:.*'))
     }
 }

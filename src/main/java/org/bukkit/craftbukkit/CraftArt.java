@@ -1,12 +1,14 @@
 package org.bukkit.craftbukkit;
 
-import net.minecraft.server.EntityPainting.EnumArt;
+
+import net.minecraft.entity.item.EntityPainting;
+import net.minecraft.entity.item.EntityPainting.EnumArt;
 import org.bukkit.Art;
 
 // Safety class, will break if either side changes
 public class CraftArt {
 
-    public static Art NotchToBukkit(EnumArt art) {
+    public static Art NotchToBukkit(EntityPainting.EnumArt art) {
         switch (art) {
             case KEBAB: return Art.KEBAB;
             case AZTEC: return Art.AZTEC;
