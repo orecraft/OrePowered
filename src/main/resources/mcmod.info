@@ -1,16 +1,11 @@
 [
 {
-  "modid": "examplemod",
-  "name": "Example Mod",
-  "description": "Example placeholder mod.",
+  "modid": "orepowered",
+  "name": "OrePowered",
+  "description": "Let's use Bukkit on forge!",
   "version": "${version}",
   "mcversion": "${mcversion}",
-  "url": "",
-  "updateUrl": "",
-  "authorList": ["ExampleDude"],
-  "credits": "The Forge and FML guys, for making this example",
-  "logoFile": "",
-  "screenshots": [],
-  "dependencies": []
+  "authorList": ["hempflower"],
+  "credits": "ORECRAFT"
 }
 ]

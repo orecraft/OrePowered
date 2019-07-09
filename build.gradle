@@ -1,24 +1,46 @@
 buildscript {
     repositories {
         jcenter()
+        
         maven { url = "http://files.minecraftforge.net/maven" }
+        
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
-apply plugin: 'net.minecraftforge.gradle.forge'
-//Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
+plugins {
+    id 'com.github.johnrengelman.shadow' version '2.0.4'
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'com.github.johnrengelman.shadow'
+//Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+repositories {
+    maven { url = "https://hub.spigotmc.org/nexus/content/groups/public" }
+}
 
 version = "1.0"
-group = "com.yourname.modid" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "modid"
+group = "cn.orecraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "OrePowered"
 
 sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 compileJava {
     sourceCompatibility = targetCompatibility = '1.8'
 }
+shadowJar {
+    classifier = null
+    relocate 'jline', 'shadow.junit'
+    relocate 'org.bukkit.craftbukkit', 'org.bukkit.craftbukkit.1_12_R2'
+    minimize {
+        exclude(dependency('junit:.*:.*'))
+    }
+}
+jar {
+    finalizedBy shadowJar
+}
+
+
 
 minecraft {
     version = "1.12.2-14.23.5.2768"
@@ -34,6 +56,7 @@ minecraft {
 }
 
 dependencies {
+    compile 'org.bukkit:bukkit:1.12.2-R0.1-SNAPSHOT'
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"
@@ -54,6 +77,8 @@ dependencies {
     // for more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
+    
+
 
 }
 
