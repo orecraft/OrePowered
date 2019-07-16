@@ -1,12 +1,16 @@
 buildscript {
     repositories {
         jcenter()
-        
         maven { url = "http://files.minecraftforge.net/maven" }
+        maven {
+            name = 'sponge'
+            url = 'https://repo.spongepowered.org/maven/'
+        }
         
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath 'org.spongepowered:mixingradle:0.8.2-SNAPSHOT'
     }
 }
 
@@ -15,9 +19,14 @@ plugins {
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'org.spongepowered.mixin'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 repositories {
     maven { url = "https://hub.spigotmc.org/nexus/content/groups/public" }
+    maven {
+        name = 'sponge'
+        url = 'https://repo.spongepowered.org/maven/'
+    }
 }
 
 version = "1.0"
@@ -30,19 +39,30 @@ compileJava {
 }
 shadowJar {
     classifier = null
-    relocate 'jline', 'shadow.junit'
-    relocate 'org.bukkit.craftbukkit', 'org.bukkit.craftbukkit.1_12_R2'
+    relocate 'jline', 'shadow.jline'
     dependencies {
         exclude(dependency('junit:.*:.*'))
     }
 }
 jar {
+    manifest {
+//实现了IFMLLoadingPlugin的类（你的coremod类）
+        attributes 'FMLCorePlugin': 'cn.orecraft.orepowered.coremod.OreCoreMod'
+        attributes 'TweakClass':'org.spongepowered.asm.launch.MixinTweaker'
+        attributes 'TweakOrder':'0'
+        attributes 'MixinConfigs': 'mixin/minxin.orepowered.mc.json'
+    }
     finalizedBy shadowJar
+}
+mixin {
+    add sourceSets.main, "mixin/minxin.orepowered.mc.refmap.json"
+
 }
 
 
 
 minecraft {
+    coreMod = 'cn.orecraft.orepowered.coremod.OreCoreMod'
     version = "1.12.2-14.23.5.2768"
     runDir = "run"
     
@@ -52,11 +72,13 @@ minecraft {
     // Use non-default mappings at your own risk. they may not always work.
     // simply re-run your setup task after changing the mappings to update your workspace.
     mappings = "snapshot_20171003"
+    // serverJvmArgs += "-Dfml.coreMods.load=cn.orecraft.orepowered.coremod.OreCoreMod"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
 dependencies {
     compile 'org.bukkit:bukkit:1.12.2-R0.1-SNAPSHOT'
+    compile 'org.spongepowered:mixin:0.7.11-SNAPSHOT'
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"

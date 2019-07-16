@@ -1,0 +1,12 @@
+{
+  "package":"cn.orecraft.orepowered.mixin",
+  "minVersion":"0.7",
+  "compatibilityLevel": "JAVA_8",
+  "mixins":[],
+  "client":[],
+  "server":[
+    "MinecraftServer_Mixin",
+    "DedicatedServer_Mixin"
+  ],
+  "refmap":"minxin/minxin.orepowered.mc.refmap.json"
+}

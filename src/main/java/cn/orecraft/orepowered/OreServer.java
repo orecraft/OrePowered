@@ -8,7 +8,13 @@
 
 package cn.orecraft.orepowered;
 
+import cn.orecraft.orepowered.bridge.MinecraftServer_bridge;
+import cn.orecraft.orepowered.mixin.MinecraftServer_Mixin;
+import cn.orecraft.orepowered.util.LogRedirectHandler;
 import net.minecraft.server.MinecraftServer;
+
+import net.minecraft.server.dedicated.PropertyManager;
+import org.apache.logging.log4j.LogManager;
 import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.boss.BarColor;
@@ -33,17 +39,23 @@ import org.bukkit.plugin.messaging.Messenger;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.util.CachedServerIcon;
+import scala.collection.parallel.ParIterableLike;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.*;
 import java.util.logging.Logger;
 
+
 public class OreServer implements Server {
     private final String serverversion = "0.0.1";
     private final MinecraftServer mcserver;
+    private final Logger logger = Logger.getLogger("Minecraft");
+    private final PropertyManager settings;
     public OreServer(MinecraftServer mcserver){
         this.mcserver = mcserver;
+        this.settings = ((MinecraftServer_bridge)mcserver).getPropertyManager();
+        getLogger().info("Test Hack:"+getViewDistance());
     }
     @Override
     public String getName() {
@@ -77,47 +89,47 @@ public class OreServer implements Server {
 
     @Override
     public int getViewDistance() {
-        return this.mcserver.get;
+        return settings.getIntProperty("view-distance",10);
     }
 
     @Override
     public String getIp() {
-        return null;
+        return settings.getStringProperty("server-ip","");
     }
 
     @Override
     public String getServerName() {
-        return null;
+        return settings.getStringProperty("server-name","OrePowered:)");
     }
 
     @Override
     public String getServerId() {
-        return null;
+        return settings.getStringProperty("server-id","unnamed");
     }
 
     @Override
     public String getWorldType() {
-        return null;
+        return settings.getStringProperty("level-type", "DEFAULT");
     }
 
     @Override
     public boolean getGenerateStructures() {
-        return false;
+        return settings.getBooleanProperty("generate-structures", true);
     }
 
     @Override
     public boolean getAllowEnd() {
-        return false;
+        return settings.getBooleanProperty("settings.allow-end",true);
     }
 
     @Override
     public boolean getAllowNether() {
-        return false;
+        return settings.getBooleanProperty("allow-nether", true);
     }
 
     @Override
     public boolean hasWhitelist() {
-        return false;
+        return settings.getBooleanProperty("white-list", false);
     }
 
     @Override
@@ -252,7 +264,7 @@ public class OreServer implements Server {
 
     @Override
     public Logger getLogger() {
-        return null;
+        return logger;
     }
 
     @Override
